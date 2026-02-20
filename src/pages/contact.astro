@@ -1,0 +1,234 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config.js';
+import { contactContent } from '../content/contact.js';
+import { processContent } from '../utils/content.js';
+
+const content = processContent(contactContent);
+const { businessName, phone, location, forms, niche } = siteConfig;
+const { city, stateAbbr } = location;
+---
+
+<BaseLayout 
+  title={`Contact Us | ${businessName}`}
+  description={`Contact ${businessName} for a free ${niche.toLowerCase()} estimate in ${city}, ${stateAbbr}. Call ${phone.display} or fill out our contact form.`}
+>
+
+  <section class="hero">
+    <div class="container">
+      <h1>{content.hero.heading}</h1>
+      <p>{content.hero.subtitle}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+        
+        <div class="contact-info">
+          <h2>{content.main.heading}</h2>
+          <p>{content.main.content}</p>
+          
+          <div class="info-items">
+            <div class="info-item">
+              <h3>{content.contactInfo.phoneLabel}</h3>
+              <a href={phone.tel}>{phone.display}</a>
+            </div>
+            
+            <div class="info-item">
+              <h3>{content.contactInfo.addressLabel}</h3>
+              <p>{city}, {stateAbbr} and surrounding communities</p>
+            </div>
+            
+            <div class="info-item">
+              <h3>{content.contactInfo.hoursLabel}</h3>
+              <p style="white-space: pre-line;">{content.contactInfo.hours}</p>
+            </div>
+          </div>
+          
+          <div class="direct-call">
+            <h3>{content.contactInfo.preferCallHeading}</h3>
+            <a href={phone.tel} class="btn btn-large">{phone.display}</a>
+          </div>
+        </div>
+        
+        <div class="contact-form-wrapper">
+          <h2>{content.form.heading}</h2>
+          
+          <form class="contact-form" action={forms.action} method="POST">
+            <!-- Hidden fields for lead routing -->
+            <input type="hidden" name="site_name" value={businessName}>
+            <input type="hidden" name="client_email" value={forms.clientEmail}>
+            
+            <div class="form-group">
+              <label for="name">{content.form.fields.name}</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">{content.form.fields.email}</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="phone">{content.form.fields.phone}</label>
+              <input type="tel" id="phone" name="phone" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="address">{content.form.fields.address}</label>
+              <input type="text" id="address" name="address" placeholder={content.form.fields.addressPlaceholder}>
+            </div>
+            
+            <div class="form-group">
+              <label for="service">{content.form.fields.service}</label>
+              <select id="service" name="service" required>
+                <option value="">Select a service...</option>
+                {forms.serviceOptions.map(option => (
+                  <option value={option.value}>{option.label}</option>
+                ))}
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="message">{content.form.fields.message}</label>
+              <textarea id="message" name="message" rows="4" placeholder={content.form.fields.messagePlaceholder}></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label for="timeline">{content.form.fields.timeline}</label>
+              <select id="timeline" name="timeline">
+                {content.form.timelineOptions.map(option => (
+                  <option value={option.value}>{option.label}</option>
+                ))}
+              </select>
+            </div>
+            
+            <button type="submit" class="btn btn-large">{content.form.submitText}</button>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  
+  @media (max-width: 900px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+  
+  .contact-info h2 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+  
+  .info-items {
+    margin: 2rem 0;
+  }
+  
+  .info-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .info-item:last-child {
+    border-bottom: none;
+  }
+  
+  .info-item h3 {
+    font-size: 1rem;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+  }
+  
+  .info-item a {
+    color: var(--primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  
+  .info-item a:hover {
+    text-decoration: underline;
+  }
+  
+  .direct-call {
+    background: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .direct-call h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+  
+  .contact-form-wrapper {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  
+  .contact-form-wrapper h2 {
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form-group label {
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 0.875rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  
+  .btn-large {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+  }
+  
+  .contact-form .btn-large {
+    margin-top: 0.5rem;
+  }
+</style>

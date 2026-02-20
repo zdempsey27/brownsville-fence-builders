@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config.js';
+import { aboutContent } from '../content/about.js';
+import { processContent } from '../utils/content.js';
+
+const content = processContent(aboutContent);
+const { businessName, phone, location, niche } = siteConfig;
+const { city, stateAbbr } = location;
+---
+
+<BaseLayout 
+  title={`About ${businessName} | ${niche} Contractor in ${city}, ${stateAbbr}`}
+  description={`Learn about ${businessName}, your trusted ${niche.toLowerCase()} contractor in ${city}, ${stateAbbr}. Quality craftsmanship, exceptional service.`}
+>
+
+  <section class="hero">
+    <div class="container">
+      <h1>{content.hero.heading}</h1>
+      <p>{content.hero.subtitle}</p>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="container">
+      <h2>{content.main.heading}</h2>
+      
+      {content.main.paragraphs.map(para => (
+        <p set:html={para}></p>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">{content.coreValues.heading}</h2>
+      
+      <div class="card-grid">
+        {content.coreValues.values.map(value => (
+          <div class="card">
+            <h3>{value.heading}</h3>
+            <p>{value.content}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="container">
+      <h2>{content.whyTrustUs.heading}</h2>
+      
+      <div class="card-grid">
+        {content.whyTrustUs.values.map(value => (
+          <div class="card">
+            <h3>{value.title}</h3>
+            <p>{value.description}</p>
+          </div>
+        ))}
+      </div>
+      
+      <p>{content.whyTrustUs.closingParagraph}</p>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>{content.cta.heading}</h2>
+      <p>{content.cta.content}</p>
+      <a href={phone.tel} class="btn">{content.cta.ctaText} {phone.display}</a>
+    </div>
+  </section>
+
+</BaseLayout>
