@@ -84,7 +84,7 @@ export const chainLinkFenceContent = {
 
   cta: {
     heading: "Ready to Get Started?",
-    content: "Get a free estimate on chain-link fencing for your property. We'll measure, discuss your options, and give you honest pricing.",
+    content: "Get a free estimate on chain-link fencing for your property. We'll measure, discuss your options, and give you honest pricing. Contact for your <a href=\"http://www.sanduskyfencingbuilders.com\">fencing services</a>!",
     ctaText: "Call Now:",
   },
 
