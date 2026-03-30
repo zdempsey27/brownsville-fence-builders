@@ -133,12 +133,12 @@ const galleryImages = images.serviceGalleries[slug] || [];
         <!-- RIGHT COLUMN: Intro Content + First Section -->
         <div class="intro-content">
           <h2>{service.name} in {city}, {stateAbbr}</h2>
-          <p>{content.intro.content}</p>
+          <p set:html={content.intro.content} />
           
           {content.sections[0] && (
             <>
               <h3>{content.sections[0].heading}</h3>
-              <p>{content.sections[0].content}</p>
+              <p set:html={content.sections[0].content} />
             </>
           )}
         </div>
@@ -153,11 +153,11 @@ const galleryImages = images.serviceGalleries[slug] || [];
         {content.sections.slice(1).map(section => (
           <>
             <h2>{section.heading}</h2>
-            <p>{section.content}</p>
+            <p set:html={section.content} />
           </>
         ))}
         
-        {content.closing && <p>{content.closing}</p>}
+        {content.closing && <p set:html={content.closing} />}
       </div>
     </section>
   )}
@@ -181,13 +181,13 @@ const galleryImages = images.serviceGalleries[slug] || [];
     <section class="content-section">
       <div class="container">
         <h2>{content.signsYouNeed.heading}</h2>
-        <p>{content.signsYouNeed.intro}</p>
+        <p set:html={content.signsYouNeed.intro} />
         
         <div class="card-grid">
           {content.signsYouNeed.cards.map(card => (
             <div class="card">
               <h3>{card.heading}</h3>
-              <p>{card.content}</p>
+              <p set:html={card.content} />
             </div>
           ))}
         </div>
@@ -200,13 +200,13 @@ const galleryImages = images.serviceGalleries[slug] || [];
     <section class="section">
       <div class="container">
         <h2 class="section-title">{content.woodTypes.heading}</h2>
-        <p style="margin-bottom: 2rem;">{content.woodTypes.intro}</p>
+        <p style="margin-bottom: 2rem;" set:html={content.woodTypes.intro} />
         
         <div class="card-grid">
           {content.woodTypes.types.map(type => (
             <div class="card">
               <h3>{type.name}</h3>
-              <p>{type.description}</p>
+              <p set:html={type.description} />
             </div>
           ))}
         </div>
@@ -219,13 +219,13 @@ const galleryImages = images.serviceGalleries[slug] || [];
     <section class="section">
       <div class="container">
         <h2 class="section-title">{content.process.heading}</h2>
-        <p style="margin-bottom: 2rem;">{content.process.intro}</p>
+        <p style="margin-bottom: 2rem;" set:html={content.process.intro} />
         
         <div class="process-steps">
           {content.process.steps.map(step => (
             <div class="process-step">
               <h3>{step.heading}</h3>
-              <p>{step.content}</p>
+              <p set:html={step.content} />
             </div>
           ))}
         </div>
@@ -237,7 +237,7 @@ const galleryImages = images.serviceGalleries[slug] || [];
   <section class="cta-section">
     <div class="container">
       <h2>{content.cta.heading}</h2>
-      <p>{content.cta.content}</p>
+      <p set:html={content.cta.content} />
       <a href={phone.tel} class="btn">{content.cta.ctaText} {phone.display}</a>
     </div>
   </section>
