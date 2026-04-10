@@ -11,7 +11,7 @@ const {
   description = siteConfig.seo.defaultDescription 
 } = Astro.props;
 
-const { businessName, phone, services, serviceAreas, location, colors, footerAbout } = siteConfig;
+const { businessName, phone, services, serviceAreas, location, colors, footerAbout, businessHours } = siteConfig;
 ---
 
 <!DOCTYPE html>
@@ -24,16 +24,68 @@ const { businessName, phone, services, serviceAreas, location, colors, footerAbo
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- LocalBusiness Schema Markup -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://brownsvillefencebuilders.com",
+    "name": businessName,
+    "description": description,
+    "url": "https://brownsvillefencebuilders.com",
+    "telephone": phone.display,
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": location.city,
+      "addressRegion": location.stateAbbr,
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 25.9017,
+      "longitude": -97.4975
+    },
+    "areaServed": serviceAreas.map(area => ({
+      "@type": "City",
+      "name": area.name + ", " + location.stateAbbr
+    })),
+    "serviceType": services.map(s => s.name),
+    "priceRange": "$$",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "07:00",
+      "closes": "18:00"
+    }
+  })} />
 </head>
 <body>
   <!-- HEADER -->
   <header class="header">
-    <div class="header-container">
-      <a href="/" class="logo">
-        <img src="/images/logo.jpg" alt={businessName} class="logo-img" />
-      </a>
-      
-      <nav class="nav">
+    <!-- Top Bar: Logo + Contact Info -->
+    <div class="header-top">
+      <div class="header-top-container">
+        <a href="/" class="logo">
+          <img src="/images/logo.jpg" alt={businessName} class="logo-img" />
+        </a>
+        
+        <div class="header-contact">
+          <div class="header-contact-item">
+            <a href={phone.tel} class="header-phone">{phone.display}</a>
+            <span class="header-contact-label">Call Us Today</span>
+          </div>
+          <div class="header-contact-divider"></div>
+          <div class="header-contact-item">
+            <span class="header-satisfaction">100% Satisfaction</span>
+            <span class="header-contact-label">Guaranteed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Bottom Bar: Navigation -->
+    <nav class="header-nav">
+      <div class="header-nav-container">
         <a href="/">Home</a>
         
         <div class="dropdown">
@@ -56,10 +108,8 @@ const { businessName, phone, services, serviceAreas, location, colors, footerAbo
         
         <a href="/about">About Us</a>
         <a href="/contact">Contact Us</a>
-      </nav>
-      
-      <a href={phone.tel} class="header-phone">{phone.display}</a>
-    </div>
+      </div>
+    </nav>
   </header>
 
   <!-- MAIN CONTENT -->
@@ -91,6 +141,7 @@ const { businessName, phone, services, serviceAreas, location, colors, footerAbo
         <p><strong>{businessName}</strong></p>
         <p>{location.city}, {location.stateAbbr}</p>
         <p><a href={phone.tel}>{phone.display}</a></p>
+        <p style="margin-top: 0.75rem;"><strong>Hours:</strong><br>{businessHours}</p>
         <div class="footer-logo">
           <a href="/">
             <img src="/images/logo.jpg" alt={businessName} />
@@ -146,24 +197,24 @@ const { businessName, phone, services, serviceAreas, location, colors, footerAbo
   
   /* HEADER */
   .header {
-    background: var(--primary);
-    color: var(--white);
-    padding: 1rem 0;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   }
   
-  .header-container {
+  /* Top Bar - Dark with logo and contact */
+  .header-top {
+    background: var(--primary);
+    padding: 0.75rem 0;
+  }
+  
+  .header-top-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
   }
   
   .logo {
@@ -172,23 +223,91 @@ const { businessName, phone, services, serviceAreas, location, colors, footerAbo
   }
   
   .logo-img {
-    height: 100px;
+    height: 60px;
     width: auto;
+    border-radius: 4px;
   }
   
-  .nav {
+  .header-contact {
     display: flex;
     gap: 1.5rem;
     align-items: center;
   }
   
-  .nav > a, .dropdown > a {
-    padding: 0.5rem 0;
-    transition: opacity 0.2s;
+  .header-contact-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255,255,255,0.2);
   }
   
-  .nav > a:hover, .dropdown:hover > a {
-    opacity: 0.8;
+  .header-contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .header-phone {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  
+  .header-phone:hover {
+    color: var(--accent);
+  }
+  
+  .header-satisfaction {
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  
+  .header-contact-label {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  /* Navigation Bar - Slightly lighter dark */
+  .header-nav {
+    background: var(--primaryDark);
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .header-nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+  }
+  
+  .header-nav-container > a,
+  .header-nav-container > .dropdown {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .header-nav-container > a,
+  .header-nav-container > .dropdown > a {
+    display: block;
+    padding: 1rem 1.5rem;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+  
+  .header-nav-container > a:hover,
+  .header-nav-container > .dropdown:hover > a {
+    background: rgba(255,255,255,0.1);
+    color: var(--accent);
   }
   
   .dropdown {
@@ -208,6 +327,7 @@ const { businessName, phone, services, serviceAreas, location, colors, footerAbo
     overflow: hidden;
     transform: translateY(-10px);
     transition: all 0.25s ease;
+    z-index: 100;
   }
   
   .dropdown:hover .dropdown-content {
@@ -225,19 +345,6 @@ const { businessName, phone, services, serviceAreas, location, colors, footerAbo
   
   .dropdown-content a:hover {
     background: var(--light);
-  }
-  
-  .header-phone {
-    background: var(--white);
-    color: var(--primary);
-    padding: 0.75rem 1.5rem;
-    border-radius: 4px;
-    font-weight: 600;
-    transition: transform 0.2s;
-  }
-  
-  .header-phone:hover {
-    transform: scale(1.05);
   }
   
   /* FOOTER */
@@ -295,13 +402,39 @@ const { businessName, phone, services, serviceAreas, location, colors, footerAbo
   
   /* RESPONSIVE */
   @media (max-width: 768px) {
-    .header-container {
+    .header-top-container {
       flex-direction: column;
+      text-align: center;
+      gap: 0.75rem;
     }
     
-    .nav {
+    .header-contact {
+      flex-direction: row;
+      gap: 1rem;
+    }
+    
+    .header-contact-divider {
+      height: 30px;
+    }
+    
+    .header-contact-item {
+      align-items: center;
+      text-align: center;
+    }
+    
+    .header-nav-container {
       flex-wrap: wrap;
       justify-content: center;
+    }
+    
+    .header-nav-container > a,
+    .header-nav-container > .dropdown > a {
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .logo-img {
+      height: 50px;
     }
   }
 </style>
@@ -541,8 +674,8 @@ const { businessName, phone, services, serviceAreas, location, colors, footerAbo
   /* SERVICES GRID */
   .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
   }
   
   .service-card {
@@ -554,28 +687,30 @@ const { businessName, phone, services, serviceAreas, location, colors, footerAbo
   }
   
   .service-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   }
   
   .service-card img {
     width: 100%;
-    height: 220px;
+    height: 160px;
     object-fit: cover;
   }
   
   .service-card-content {
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
   
   .service-card-content h3 {
     color: var(--primary);
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
   }
   
   .service-card-content p {
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
+    margin-bottom: 1rem;
+    line-height: 1.5;
     color: #555;
+    font-size: 0.9rem;
   }
 </style>

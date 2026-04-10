@@ -5,7 +5,7 @@ import { contactContent } from '../content/contact.js';
 import { processContent } from '../utils/content.js';
 
 const content = processContent(contactContent);
-const { businessName, phone, location, forms, niche } = siteConfig;
+const { businessName, phone, location, forms, niche, serviceAreas, businessHours, formHeading, formUrgencyText, colors } = siteConfig;
 const { city, stateAbbr } = location;
 ---
 
@@ -14,97 +14,134 @@ const { city, stateAbbr } = location;
   description={`Contact ${businessName} for a free ${niche.toLowerCase()} estimate in ${city}, ${stateAbbr}. Call ${phone.display} or fill out our contact form.`}
 >
 
-  <section class="hero">
+  <!-- HERO SECTION -->
+  <section class="contact-hero" style="
+    background-image: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%), url('/images/fence-installer-1.jpeg');
+    background-size: cover;
+    background-position: center;
+    padding: 5rem 2rem;
+    color: white;
+    text-align: center;
+  ">
     <div class="container">
-      <h1>{content.hero.heading}</h1>
-      <p>{content.hero.subtitle}</p>
+      <span class="section-label" style="color: var(--accent);">GET IN TOUCH</span>
+      <h1 style="font-size: 2.75rem; margin-bottom: 1rem;">{content.hero.heading}</h1>
+      <p style="font-size: 1.2rem; opacity: 0.9; max-width: 700px; margin: 0 auto;">{content.hero.subtitle}</p>
     </div>
   </section>
 
+  <!-- MAIN CONTACT SECTION -->
   <section class="section">
     <div class="container">
       <div class="contact-grid">
         
-        <div class="contact-info">
-          <h2>{content.main.heading}</h2>
-          <p>{content.main.content}</p>
+        <!-- LEFT COLUMN: Contact Info + Badges + Call Box -->
+        <div class="contact-left">
           
-          <div class="info-items">
-            <div class="info-item">
-              <h3>{content.contactInfo.phoneLabel}</h3>
-              <a href={phone.tel}>{phone.display}</a>
+          <!-- Contact Info Cards -->
+          <div class="contact-cards">
+            <div class="contact-card">
+              <span class="contact-icon">📞</span>
+              <div>
+                <h4>Phone</h4>
+                <a href={phone.tel}>{phone.display}</a>
+              </div>
             </div>
             
-            <div class="info-item">
-              <h3>{content.contactInfo.addressLabel}</h3>
-              <p>{city}, {stateAbbr} and surrounding communities</p>
+            <div class="contact-card">
+              <span class="contact-icon">📍</span>
+              <div>
+                <h4>Service Area</h4>
+                <p>{city}, {stateAbbr} & Surrounding Areas</p>
+              </div>
             </div>
             
-            <div class="info-item">
-              <h3>{content.contactInfo.hoursLabel}</h3>
-              <p style="white-space: pre-line;">{content.contactInfo.hours}</p>
+            <div class="contact-card">
+              <span class="contact-icon">🕐</span>
+              <div>
+                <h4>Business Hours</h4>
+                <p>{businessHours}</p>
+              </div>
             </div>
           </div>
           
-          <div class="direct-call">
-            <h3>{content.contactInfo.preferCallHeading}</h3>
-            <a href={phone.tel} class="btn btn-large">{phone.display}</a>
+          <!-- Trust Badges -->
+          <div class="contact-badges">
+            <img src="/images/Licensed-1.png" alt="Licensed & Insured" style="height: 60px;">
+            <img src="/images/Award-winning.png" alt="Award Winning" style="height: 70px;">
           </div>
+          
+          <!-- Direct Call Box -->
+          <div class="call-box" style={`background: ${colors.primary};`}>
+            <h3 style="color: white; margin-bottom: 0.5rem;">Prefer to Talk?</h3>
+            <p style="color: rgba(255,255,255,0.85); margin-bottom: 1rem; font-size: 0.95rem;">Our team is ready to answer your questions and provide a free estimate.</p>
+            <a href={phone.tel} class="btn" style="background: #FFD700; color: #1a1a1a; width: 100%; text-align: center;">
+              Call {phone.display}
+            </a>
+          </div>
+          
         </div>
         
+        <!-- RIGHT COLUMN: Form -->
         <div class="contact-form-wrapper">
-          <h2>{content.form.heading}</h2>
+          <h2 style="color: var(--primary); margin-bottom: 0.5rem;">{formHeading}</h2>
+          <p style="color: var(--accent); font-weight: 600; margin-bottom: 1.5rem;">{formUrgencyText}</p>
           
           <form class="contact-form" action={forms.action} method="POST">
-            <!-- Hidden fields for lead routing -->
             <input type="hidden" name="site_name" value={businessName}>
             <input type="hidden" name="client_email" value={forms.clientEmail}>
             
             <div class="form-group">
-              <label for="name">{content.form.fields.name}</label>
-              <input type="text" id="name" name="name" required>
+              <label for="name">Full Name *</label>
+              <input type="text" id="name" name="name" placeholder="Your full name" required>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone *</label>
+                <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" required>
+              </div>
             </div>
             
             <div class="form-group">
-              <label for="email">{content.form.fields.email}</label>
-              <input type="email" id="email" name="email" required>
+              <label for="address">Project Address</label>
+              <input type="text" id="address" name="address" placeholder="Street address (optional)">
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="service">Service Needed *</label>
+                <select id="service" name="service" required>
+                  <option value="">Select service...</option>
+                  {forms.serviceOptions.map(option => (
+                    <option value={option.value}>{option.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="timeline">Timeline</label>
+                <select id="timeline" name="timeline">
+                  <option value="">When do you need it?</option>
+                  <option value="asap">As soon as possible</option>
+                  <option value="2-weeks">Within 2 weeks</option>
+                  <option value="1-month">Within a month</option>
+                  <option value="flexible">Flexible / Just exploring</option>
+                </select>
+              </div>
             </div>
             
             <div class="form-group">
-              <label for="phone">{content.form.fields.phone}</label>
-              <input type="tel" id="phone" name="phone" required>
+              <label for="message">Project Details</label>
+              <textarea id="message" name="message" rows="4" placeholder="Tell us about your fencing project - type of fence, approximate length, any special requirements..."></textarea>
             </div>
             
-            <div class="form-group">
-              <label for="address">{content.form.fields.address}</label>
-              <input type="text" id="address" name="address" placeholder={content.form.fields.addressPlaceholder}>
-            </div>
-            
-            <div class="form-group">
-              <label for="service">{content.form.fields.service}</label>
-              <select id="service" name="service" required>
-                <option value="">Select a service...</option>
-                {forms.serviceOptions.map(option => (
-                  <option value={option.value}>{option.label}</option>
-                ))}
-              </select>
-            </div>
-            
-            <div class="form-group">
-              <label for="message">{content.form.fields.message}</label>
-              <textarea id="message" name="message" rows="4" placeholder={content.form.fields.messagePlaceholder}></textarea>
-            </div>
-            
-            <div class="form-group">
-              <label for="timeline">{content.form.fields.timeline}</label>
-              <select id="timeline" name="timeline">
-                {content.form.timelineOptions.map(option => (
-                  <option value={option.value}>{option.label}</option>
-                ))}
-              </select>
-            </div>
-            
-            <button type="submit" class="btn btn-large">{content.form.submitText}</button>
+            <button type="submit" class="btn" style="background: var(--primary); width: 100%; padding: 1rem; font-size: 1.1rem;">
+              Get My Free Estimate
+            </button>
           </form>
         </div>
         
@@ -112,108 +149,166 @@ const { city, stateAbbr } = location;
     </div>
   </section>
 
+  <!-- SERVICE AREAS SECTION -->
+  <section class="section" style="
+    background-image: linear-gradient(rgba(59, 37, 24, 0.92), rgba(59, 37, 24, 0.92)), url('/images/vinyl-fence-1.jpeg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+  ">
+    <div class="container" style="text-align: center;">
+      <span class="section-label" style="color: var(--accent);">WHERE WE WORK</span>
+      <h2 style="color: white; margin-bottom: 1rem;">Serving the Rio Grande Valley</h2>
+      <p style="max-width: 600px; margin: 0 auto 2rem; color: rgba(255,255,255,0.85);">We provide professional fence installation and repair services throughout Cameron County and surrounding areas.</p>
+      
+      <div class="areas-pills">
+        {serviceAreas.map(area => (
+          <a href={`/service-areas/${area.slug}`} class="area-pill">{area.name}</a>
+        ))}
+      </div>
+    </div>
+  </section>
+
 </BaseLayout>
 
 <style>
+  /* Section Label */
+  .section-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  /* Contact Grid */
   .contact-grid {
     display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 4rem;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
     align-items: start;
   }
   
   @media (max-width: 900px) {
     .contact-grid {
       grid-template-columns: 1fr;
-      gap: 3rem;
+    }
+    .contact-left {
+      order: 2;
+    }
+    .contact-form-wrapper {
+      order: 1;
     }
   }
-  
-  .contact-info h2 {
-    color: var(--primary);
-    margin-bottom: 1rem;
-  }
-  
-  .info-items {
-    margin: 2rem 0;
-  }
-  
-  .info-item {
+
+  /* Contact Cards */
+  .contact-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     margin-bottom: 1.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid #eee;
   }
   
-  .info-item:last-child {
-    border-bottom: none;
+  .contact-card {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.25rem;
+    background: #f8f8f8;
+    border-radius: 8px;
   }
   
-  .info-item h3 {
-    font-size: 1rem;
+  .contact-icon {
+    font-size: 1.5rem;
+  }
+  
+  .contact-card h4 {
     color: var(--primary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
   }
   
-  .info-item a {
+  .contact-card a {
     color: var(--primary);
-    font-size: 1.2rem;
     font-weight: 600;
+    font-size: 1.1rem;
   }
   
-  .info-item a:hover {
+  .contact-card a:hover {
     text-decoration: underline;
   }
   
-  .direct-call {
-    background: #f5f5f5;
+  .contact-card p {
+    color: #555;
+    font-size: 0.95rem;
+  }
+
+  /* Contact Badges */
+  .contact-badges {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  /* Call Box */
+  .call-box {
     padding: 1.5rem;
     border-radius: 8px;
     text-align: center;
   }
-  
-  .direct-call h3 {
-    color: var(--primary);
-    margin-bottom: 1rem;
-  }
-  
+
+  /* Form Wrapper */
   .contact-form-wrapper {
     background: white;
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   }
-  
-  .contact-form-wrapper h2 {
-    color: var(--primary);
-    margin-bottom: 1.5rem;
-  }
-  
+
+  /* Form Styles */
   .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1rem;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  
+  @media (max-width: 500px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
   }
   
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
   
   .form-group label {
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    color: #333;
   }
   
   .form-group input,
   .form-group select,
   .form-group textarea {
-    padding: 0.875rem 1rem;
+    padding: 0.85rem 1rem;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 1rem;
     font-family: inherit;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
   
   .form-group input:focus,
@@ -221,14 +316,32 @@ const { city, stateAbbr } = location;
   .form-group textarea:focus {
     outline: none;
     border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(59, 37, 24, 0.1);
+  }
+
+  /* Service Areas Pills */
+  .areas-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
   }
   
-  .btn-large {
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
+  .area-pill {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    padding: 0.6rem 1.25rem;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    border: 1px solid rgba(255,255,255,0.2);
   }
   
-  .contact-form .btn-large {
-    margin-top: 0.5rem;
+  .area-pill:hover {
+    background: var(--accent);
+    color: #1a1a1a;
+    transform: translateY(-2px);
   }
 </style>

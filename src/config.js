@@ -21,6 +21,58 @@ const PRIMARY_DARK = "#1A1A1A";
 const SECONDARY_COLOR = "#3D3D3D";
 const ACCENT_COLOR = "#C4956A";
 
+// HERO SECTION
+const HERO_TAGLINE = "PROFESSIONAL FENCE INSTALLATION";
+const HERO_HEADLINE = `${CITY}'s Top-Rated Fence Contractors`;
+const HERO_DESCRIPTION = `From wood privacy fences to commercial chain-link, ${BUSINESS_NAME} delivers quality craftsmanship built for the ${REGION} climate. Licensed, insured, and locally owned.`;
+const HERO_CTA_TEXT = "Request Your Free Estimate";
+
+// FORM SECTION
+const FORM_HEADING = "Get Your Free Estimate";
+const FORM_URGENCY_TEXT = "Limited Slots Available This Month!";
+
+// REVIEWS & TRUST
+const REVIEW_RATING = 4.9;
+const REVIEW_COUNT = 100;
+const TRUST_BADGES = [
+  { text: "Licensed & Insured", icon: "shield" },
+  { text: "Locally Owned", icon: "award" },
+];
+
+// BUSINESS HOURS
+const BUSINESS_HOURS = "Mon-Fri: 7:00 AM - 6:00 PM";
+
+// STATS (for progress bars)
+const STATS = [
+  { label: "Quality Materials", value: 95 },
+  { label: "Customer Satisfaction", value: 98 },
+  { label: "On-Time Completion", value: 94 },
+];
+
+// TESTIMONIALS
+const TESTIMONIALS = [
+  {
+    quote: "They installed a beautiful cedar fence around our backyard. The crew was professional, showed up on time, and cleaned up everything when they finished. Couldn't be happier with the result.",
+    name: "Carlos M.",
+    location: "Brownsville"
+  },
+  {
+    quote: "We needed a chain-link fence for our commercial property fast. They gave us a fair quote and had it done within the week. Great communication throughout the whole process.",
+    name: "Maria S.",
+    location: "Harlingen"
+  },
+  {
+    quote: "After the last storm damaged our old fence, they came out quickly to assess and replace it. The new vinyl fence looks amazing and required zero hassle on our end.",
+    name: "James & Linda R.",
+    location: "San Benito"
+  },
+  {
+    quote: "Professional from start to finish. They helped us choose the right fence style for our property and the installation was flawless. Highly recommend to anyone in the Valley.",
+    name: "Patricia H.",
+    location: "Los Fresnos"
+  },
+];
+
 // Just type the area names — slugs generate automatically.
 // Put your primary city FIRST.
 const SERVICE_AREA_NAMES = [
@@ -66,6 +118,32 @@ export const siteConfig = {
     fullAddress: `${CITY}, ${STATE_ABBR}`,
     mapQuery: `${CITY},+${STATE_ABBR}`,
   },
+
+  // Hero Section
+  hero: {
+    tagline: HERO_TAGLINE,
+    headline: HERO_HEADLINE,
+    description: HERO_DESCRIPTION,
+    ctaText: HERO_CTA_TEXT,
+  },
+
+  // Form Section
+  formHeading: FORM_HEADING,
+  formUrgencyText: FORM_URGENCY_TEXT,
+
+  // Reviews & Trust
+  reviewRating: REVIEW_RATING,
+  reviewCount: REVIEW_COUNT,
+  trustBadges: TRUST_BADGES,
+
+  // Stats (progress bars)
+  stats: STATS,
+
+  // Testimonials
+  testimonials: TESTIMONIALS,
+
+  // Business Hours
+  businessHours: BUSINESS_HOURS,
 
   services: [
     {
@@ -129,6 +207,14 @@ export const siteConfig = {
 
   images: {
     heroMain: "/images/fence-installer-1.jpeg",
+    brandedTruck: "/images/Branded-truck-brownsville.png",
+    
+    // Badge images
+    badges: {
+      licensed: "/images/Licensed-1.png",
+      awardWinning: "/images/Award-winning.png",
+      fiveStars: "/images/Five-stars-.png",
+    },
 
     serviceCards: {
       "chain-link-fence": "/images/chain-link-fence-4.jpg",
