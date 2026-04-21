@@ -8,7 +8,7 @@ const PHONE_DISPLAY = "(956) 303-8258";
 const PHONE_TEL = "tel:+19563038258";
 const PHONE_RAW = "9563038258";
 const EMAIL = "";
-const CLIENT_EMAIL = "client@brownsvillefencebuilders.com";
+const CLIENT_EMAIL = "";
 
 const CITY = "Brownsville";
 const STATE = "Texas";
