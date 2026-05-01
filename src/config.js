@@ -206,8 +206,8 @@ export const siteConfig = {
   },
 
   images: {
-    heroMain: "/images/fence-installer-1.jpeg",
-    brandedTruck: "/images/Branded-truck-brownsville.png",
+    heroMain: "/images/fence-installer-1.jpg",
+    brandedTruck: "/images/branded-truck-brownsville.png",
     
     // Badge images
     badges: {
@@ -282,7 +282,7 @@ export const siteConfig = {
       ],
     },
 
-    aboutWork: "/images/fence-installer-1.jpg",
+    aboutWork: "/images/branded-truck-brownsville.png",
     formImage: "/images/free-fence-quote-florence-sc.jpeg",
   },
 
